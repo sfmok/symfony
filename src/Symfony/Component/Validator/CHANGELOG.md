@@ -3,7 +3,7 @@ CHANGELOG
 
 7.2
 ---
-
+ * Add the `Yaml`, `Xml` and `Jwt` constraints
  * Make `PasswordStrengthValidator::estimateStrength()` public
 
 7.1

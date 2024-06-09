@@ -25,7 +25,7 @@ class JsonValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getValidValues
      */
-    public function testJsonIsValid($value)
+    public function testJsonIsValid($value): void
     {
         $this->validator->validate($value, new Json());
 
@@ -35,7 +35,7 @@ class JsonValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getInvalidValues
      */
-    public function testInvalidValues($value)
+    public function testInvalidValues($value): void
     {
         $constraint = new Json([
             'message' => 'myMessageTest',
@@ -45,11 +45,12 @@ class JsonValidatorTest extends ConstraintValidatorTestCase
 
         $this->buildViolation('myMessageTest')
             ->setParameter('{{ value }}', '"'.$value.'"')
+            ->setParameter('{{ format }}', $constraint->format)
             ->setCode(Json::INVALID_JSON_ERROR)
             ->assertRaised();
     }
 
-    public static function getValidValues()
+    public static function getValidValues(): array
     {
         return [
             ['{"planet":"earth", "country": "Morocco","city": "Rabat" ,"postcode" : 10160, "is_great": true,
@@ -65,7 +66,7 @@ class JsonValidatorTest extends ConstraintValidatorTestCase
         ];
     }
 
-    public static function getInvalidValues()
+    public static function getInvalidValues(): array
     {
         return [
             ['{"foo": 3 "bar": 4}'],
