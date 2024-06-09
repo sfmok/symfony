@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
  */
 class NativeSessionStorageTest extends TestCase
 {
-    private $savePath;
+    private string $savePath;
 
     private $initialSessionSaveHandler;
     private $initialSessionSavePath;
@@ -55,7 +55,6 @@ class NativeSessionStorageTest extends TestCase
             @rmdir($this->savePath);
         }
 
-        $this->savePath = null;
         ini_set('session.save_handler', $this->initialSessionSaveHandler);
         ini_set('session.save_path', $this->initialSessionSavePath);
     }
@@ -190,11 +189,8 @@ class NativeSessionStorageTest extends TestCase
             'cookie_domain' => 'symfony.example.com',
             'cookie_secure' => true,
             'cookie_httponly' => false,
+            'cookie_samesite' => 'lax',
         ];
-
-        if (\PHP_VERSION_ID >= 70300) {
-            $options['cookie_samesite'] = 'lax';
-        }
 
         $this->getStorage($options);
         $temp = session_get_cookie_params();
@@ -226,8 +222,6 @@ class NativeSessionStorageTest extends TestCase
 
         try {
             $storage = $this->getStorage();
-            $storage->setSaveHandler();
-            $this->assertInstanceOf(SessionHandlerProxy::class, $storage->getSaveHandler());
             $storage->setSaveHandler(null);
             $this->assertInstanceOf(SessionHandlerProxy::class, $storage->getSaveHandler());
             $storage->setSaveHandler(new SessionHandlerProxy(new NativeFileSessionHandler()));

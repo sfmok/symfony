@@ -14,12 +14,12 @@ namespace Symfony\Component\Validator\Tests\Constraints;
 use Symfony\Component\Validator\Constraints\Iban;
 use Symfony\Component\Validator\Constraints\IbanValidator;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Validator\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class IbanValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function createValidator()
+    protected function createValidator(): IbanValidator
     {
         return new IbanValidator();
     }
@@ -53,6 +53,7 @@ class IbanValidatorTest extends ConstraintValidatorTestCase
         return [
             ['CH9300762011623852957'], // Switzerland without spaces
             ['CH93  0076 2011 6238 5295 7'], // Switzerland with multiple spaces
+            ['ch93 0076 2011 6238 5295 7'], // Switzerland lower case
 
             // Country list
             // http://www.rbs.co.uk/corporate/international/g0/guide-to-international-business/regulatory-information/iban/iban-example.ashx
@@ -442,13 +443,10 @@ class IbanValidatorTest extends ConstraintValidatorTestCase
         $this->assertViolationRaised($iban, Iban::INVALID_COUNTRY_CODE_ERROR);
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testLoadFromAttribute()
     {
         $classMetadata = new ClassMetadata(IbanDummy::class);
-        (new AnnotationLoader())->loadClassMetadata($classMetadata);
+        (new AttributeLoader())->loadClassMetadata($classMetadata);
 
         [$constraint] = $classMetadata->properties['iban']->constraints;
 

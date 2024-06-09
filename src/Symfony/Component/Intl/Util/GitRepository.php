@@ -19,12 +19,9 @@ use Symfony\Component\Intl\Exception\RuntimeException;
  */
 final class GitRepository
 {
-    private $path;
-
-    public function __construct(string $path)
-    {
-        $this->path = $path;
-
+    public function __construct(
+        private string $path,
+    ) {
         $this->getUrl();
     }
 
@@ -64,9 +61,9 @@ final class GitRepository
         return $this->getLastLine($this->execInPath('git log -1 --format="%an"'));
     }
 
-    public function getLastAuthoredDate(): \DateTime
+    public function getLastAuthoredDate(): \DateTimeImmutable
     {
-        return new \DateTime($this->getLastLine($this->execInPath('git log -1 --format="%ai"')));
+        return new \DateTimeImmutable($this->getLastLine($this->execInPath('git log -1 --format="%ai"')));
     }
 
     public function getLastTag(?callable $filter = null): string
@@ -80,7 +77,7 @@ final class GitRepository
         return $this->getLastLine($tags);
     }
 
-    public function checkout(string $branch)
+    public function checkout(string $branch): void
     {
         $this->execInPath(sprintf('git checkout %s', escapeshellarg($branch)));
     }

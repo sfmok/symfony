@@ -21,9 +21,9 @@ class DateTimeToLocalizedStringTransformerTest extends BaseDateTimeTransformerTe
 {
     use DateTimeEqualsTrait;
 
-    protected $dateTime;
-    protected $dateTimeWithoutSeconds;
-    private $defaultLocale;
+    protected \DateTime $dateTime;
+    protected \DateTime $dateTimeWithoutSeconds;
+    private string $defaultLocale;
 
     private $initialTestCaseUseException;
     private $initialTestCaseErrorLevel;
@@ -50,8 +50,6 @@ class DateTimeToLocalizedStringTransformerTest extends BaseDateTimeTransformerTe
 
     protected function tearDown(): void
     {
-        $this->dateTime = null;
-        $this->dateTimeWithoutSeconds = null;
         \Locale::setDefault($this->defaultLocale);
 
         if (\extension_loaded('intl')) {
