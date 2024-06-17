@@ -12,21 +12,21 @@
 namespace Symfony\Component\Validator\Tests\Constraints;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Validator\Constraints\Xml;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Loader\AttributeLoader;
 
-class JsonTest extends TestCase
+class XmlTest extends TestCase
 {
     public function testAttributes(): void
     {
-        $metadata = new ClassMetadata(JsonDummy::class);
+        $metadata = new ClassMetadata(XmlDummy::class);
         $loader = new AttributeLoader();
         self::assertTrue($loader->loadClassMetadata($metadata));
 
         [$bConstraint] = $metadata->properties['b']->getConstraints();
         self::assertSame('myMessage', $bConstraint->message);
-        self::assertSame(['Default', 'JsonDummy'], $bConstraint->groups);
+        self::assertSame(['Default', 'XmlDummy'], $bConstraint->groups);
 
         [$cConstraint] = $metadata->properties['c']->getConstraints();
         self::assertSame(['my_group'], $cConstraint->groups);
@@ -34,14 +34,14 @@ class JsonTest extends TestCase
     }
 }
 
-class JsonDummy
+class XmlDummy
 {
-    #[Json]
+    #[Xml]
     private $a;
 
-    #[Json(message: 'myMessage')]
+    #[Xml(message: 'myMessage')]
     private $b;
 
-    #[Json(groups: ['my_group'], payload: 'some attached data')]
+    #[Xml(groups: ['my_group'], payload: 'some attached data')]
     private $c;
 }

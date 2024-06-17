@@ -11,18 +11,26 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml as SymfonyYaml;
+
 /**
- * @author Imad ZAIRIG <imadzairig@gmail.com>
+ * @author Mokhtar Tlili <tlili.mokhtar@gmail.com>
  */
-class JsonValidator extends AbstractFormatValidator
+class YamlValidator extends AbstractFormatValidator
 {
     protected function validateFormat(string $value): bool
     {
-        return json_validate($value);
+        try {
+            SymfonyYaml::parse($value);
+            return true;
+        } catch (ParseException) {
+            return false;
+        }
     }
 
     protected function getErrorCode(): string
     {
-        return Json::INVALID_JSON_ERROR;
+        return Yaml::INVALID_YAML_ERROR;
     }
 }

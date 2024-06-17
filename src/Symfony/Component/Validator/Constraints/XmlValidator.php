@@ -12,17 +12,17 @@
 namespace Symfony\Component\Validator\Constraints;
 
 /**
- * @author Imad ZAIRIG <imadzairig@gmail.com>
+ * @author Mokhtar Tlili <tlili.mokhtar@gmail.com>
  */
-class JsonValidator extends AbstractFormatValidator
+class XmlValidator extends AbstractFormatValidator
 {
     protected function validateFormat(string $value): bool
     {
-        return json_validate($value);
+        return false !== @simplexml_load_string($value);
     }
 
     protected function getErrorCode(): string
     {
-        return Json::INVALID_JSON_ERROR;
+        return Xml::INVALID_XML_ERROR;
     }
 }
