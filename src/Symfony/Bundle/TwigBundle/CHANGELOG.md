@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+7.2
+---
+
+ * Added support for the new `twig` validator (from Twig Bridge)
+
 7.1
 ---
 

@@ -5,6 +5,7 @@ CHANGELOG
 ---
 
  * Deprecate passing a tag to the constructor of `FormThemeNode`
+ * Add the `Twig` constraint for validating Twig content
 
 7.1
 ---
